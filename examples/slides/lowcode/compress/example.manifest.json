@@ -1,0 +1,15 @@
+{
+  "scenario_id": "slides-compress",
+  "package_id": "Aspose.Slides.NET",
+  "package_version": "26.5.0",
+  "target_framework": "net8.0",
+  "claimed_symbols": [
+    "Aspose.Slides.LowCode.Compress",
+    "Aspose.Slides.LowCode.Compress.CompressEmbeddedFonts",
+    "Aspose.Slides.LowCode.Compress.RemoveUnusedLayoutSlides",
+    "Aspose.Slides.LowCode.Compress.RemoveUnusedMasterSlides"
+  ],
+  "status": "repaired",
+  "input_strategy": "none",
+  "input_files": []
+}
