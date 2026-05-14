@@ -1,0 +1,30 @@
+{
+  "scenario_id": "slides-convert",
+  "package_id": "Aspose.Slides.NET",
+  "package_version": "26.5.0",
+  "target_framework": "net8.0",
+  "claimed_symbols": [
+    "Aspose.Slides.LowCode.Convert",
+    "Aspose.Slides.LowCode.Convert.AutoByExtension",
+    "Aspose.Slides.LowCode.Convert.ToJpeg",
+    "Aspose.Slides.LowCode.Convert.ToJpeg",
+    "Aspose.Slides.LowCode.Convert.ToJpeg",
+    "Aspose.Slides.LowCode.Convert.ToPdf",
+    "Aspose.Slides.LowCode.Convert.ToPdf",
+    "Aspose.Slides.LowCode.Convert.ToPdf",
+    "Aspose.Slides.LowCode.Convert.ToPdf",
+    "Aspose.Slides.LowCode.Convert.ToPng",
+    "Aspose.Slides.LowCode.Convert.ToPng",
+    "Aspose.Slides.LowCode.Convert.ToPng",
+    "Aspose.Slides.LowCode.Convert.ToSvg",
+    "Aspose.Slides.LowCode.Convert.ToSvg",
+    "Aspose.Slides.LowCode.Convert.ToSvg",
+    "Aspose.Slides.LowCode.Convert.ToSvg",
+    "Aspose.Slides.LowCode.Convert.ToSvg",
+    "Aspose.Slides.LowCode.Convert.ToTiff",
+    "Aspose.Slides.LowCode.Convert.ToTiff"
+  ],
+  "status": "repaired",
+  "input_strategy": "programmatic_input",
+  "input_files": []
+}
