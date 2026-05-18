@@ -25,9 +25,169 @@ Broader generation requires resolving open follow-up taskcards first.
 
 | Example | Demonstrated API | Input | Output | Run |
 |---------|-----------------|-------|--------|-----|
-| `compress` | `Compress.CompressEmbeddedFonts` | `pptx` | `pptx` | `dotnet run --project examples/slides/lowcode/compress` |
-| `convert` | `Convert.AutoByExtension` | `pptx` | `pptx` | `dotnet run --project examples/slides/lowcode/convert` |
-| `merger` | `Merger.Process` | `2x pptx` | `pptx` | `dotnet run --project examples/slides/lowcode/merger` |
+| `compress` | `Compress.RemoveUnusedLayoutSlides` | `pptx` | `pptx` | `dotnet run --project examples/slides/lowcode/compress` |
+| `convert` | `Convert.ToPdf` | `pptx` | `pdf` | `dotnet run --project examples/slides/lowcode/convert` |
+| `merger` | `Merger.Process` | `pptx` | `pptx` | `dotnet run --project examples/slides/lowcode/merger` |
+
+
+
+
+---
+
+## Source Code
+
+
+
+<details>
+<summary><code>compress/Program.cs</code></summary>
+
+```csharp
+using System;
+using System.IO;
+using Aspose.Slides;
+using Aspose.Slides.Export;
+using Aspose.Slides.LowCode;
+
+class Program
+{
+    static void Main()
+    {
+        string inputPath = "input.pptx";
+        string outputPath = "output.pptx";
+
+        if (!File.Exists(inputPath))
+        {
+            Console.WriteLine($"Input file not found: {inputPath}");
+            return;
+        }
+
+        using var pres = new Presentation(inputPath);
+        Compress.RemoveUnusedLayoutSlides(pres);
+        pres.Save(outputPath, SaveFormat.Pptx);
+
+        if (File.Exists(outputPath))
+        {
+            Console.WriteLine("Compression completed successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Failed to create output file.");
+        }
+    }
+}
+```
+
+</details>
+
+
+
+
+<details>
+<summary><code>convert/Program.cs</code></summary>
+
+```csharp
+using System;
+using System.IO;
+using Aspose.Slides;
+using Aspose.Slides.LowCode;
+
+class Program
+{
+    static void Main()
+    {
+        // 1. Create input PPTX file
+        string inputPath = Path.Combine(Directory.GetCurrentDirectory(), "input.pptx");
+        using (Presentation pres = new Presentation())
+        {
+            ISlide slide = pres.Slides[0];
+            IAutoShape titleShape = slide.Shapes.AddAutoShape(ShapeType.Rectangle, 50, 50, 600, 100);
+            titleShape.AddTextFrame("LowCode Convert Demo");
+            pres.Save(inputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        }
+
+        // Validate input file exists and is non‑empty
+        if (!File.Exists(inputPath) || new FileInfo(inputPath).Length == 0)
+        {
+            Console.WriteLine("Failed to create input presentation.");
+            return;
+        }
+
+        // 2. Perform LowCode conversion to PDF
+        string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output.pdf");
+        Aspose.Slides.LowCode.Convert.ToPdf(inputPath, outputPath);
+
+        // 3. Validate output file and report success
+        if (File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
+        {
+            long size = new FileInfo(outputPath).Length;
+            Console.WriteLine($"Conversion succeeded. Output file size: {size} bytes.");
+        }
+        else
+        {
+            Console.WriteLine("Conversion failed: output file not found or empty.");
+        }
+    }
+}
+```
+
+</details>
+
+
+
+
+<details>
+<summary><code>merger/Program.cs</code></summary>
+
+```csharp
+using System;
+using System.IO;
+using Aspose.Slides;
+using Aspose.Slides.Export;
+using Aspose.Slides.LowCode;
+
+class Program
+{
+    static void Main()
+    {
+        // SECTION 1: INPUT FIXTURE CREATION
+        string inputPath = Path.Combine(Path.GetTempPath(), "input.pptx");
+        using (Presentation pres = new Presentation())
+        {
+            // Add a simple slide with a title
+            ISlide slide = pres.Slides[0];
+            IAutoShape titleShape = slide.Shapes.AddAutoShape(ShapeType.Rectangle, 50, 50, 600, 100);
+            titleShape.AddTextFrame("Sample Slide");
+            pres.Save(inputPath, SaveFormat.Pptx);
+        }
+
+        // Verify input file exists and is non‑empty
+        if (!File.Exists(inputPath) || new FileInfo(inputPath).Length == 0)
+        {
+            Console.WriteLine("Failed to create a valid input file.");
+            return;
+        }
+
+        // SECTION 2: LOWCODE OPERATION
+        string outputPath = Path.Combine(Path.GetTempPath(), "output.pptx");
+        Merger.Process(new string[] { inputPath }, outputPath);
+
+        // SECTION 3: OUTPUT VALIDATION
+        if (File.Exists(outputPath))
+        {
+            long size = new FileInfo(outputPath).Length;
+            Console.WriteLine($"Success: output file size = {size} bytes");
+        }
+        else
+        {
+            Console.WriteLine("Merger failed to produce an output file.");
+        }
+    }
+}
+```
+
+</details>
+
+
 
 
 ---
@@ -55,7 +215,7 @@ dotnet run --project examples/slides/lowcode/<example-name>
 ```
 
 Each example is a self-contained .NET project. Running it produces an output file in the project
-directory (e.g., `output.pdf`, `output.xlsx`, `output.html`).
+directory (e.g., `output.pdf`, `output.pptx`).
 
 ---
 
@@ -88,7 +248,7 @@ These examples are validated by the pipeline before publishing:
 | Example reviewer gate | PASS |
 | Gate verdict | `PR_DRY_RUN_READY` |
 
-Generated on: 2026-05-14 05:57 UTC
+Generated on: 2026-05-18 14:58 UTC
 
 ---
 
