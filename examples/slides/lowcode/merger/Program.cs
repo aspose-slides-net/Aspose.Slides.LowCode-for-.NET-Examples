@@ -1,44 +1,29 @@
 using System;
-using System.IO;
 using Aspose.Slides;
+using Aspose.Slides.LowCode;
 using Aspose.Slides.Export;
 using Aspose.Slides.LowCode;
 
-class Program
+namespace PluginExample
 {
-    static void Main()
+    class Program
     {
-        // SECTION 1: INPUT FIXTURE CREATION
-        string inputPath = Path.Combine(Path.GetTempPath(), "input.pptx");
-        using (Presentation pres = new Presentation())
+        static void Main(string[] args)
         {
-            // Add a simple slide with a title
-            ISlide slide = pres.Slides[0];
-            IAutoShape titleShape = slide.Shapes.AddAutoShape(ShapeType.Rectangle, 50, 50, 600, 100);
-            titleShape.AddTextFrame("Sample Slide");
-            pres.Save(inputPath, SaveFormat.Pptx);
-        }
+            Console.WriteLine("Example: slides-merger");
 
-        // Verify input file exists and is non‑empty
-        if (!File.Exists(inputPath) || new FileInfo(inputPath).Length == 0)
-        {
-            Console.WriteLine("Failed to create a valid input file.");
-            return;
-        }
+            // Create input file(s)
+            var pres1 = new Aspose.Slides.Presentation();
+            pres1.Slides.AddEmptySlide(pres1.LayoutSlides[0]);
+            pres1.Save("input1.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+            var pres2 = new Aspose.Slides.Presentation();
+            pres2.Slides.AddEmptySlide(pres2.LayoutSlides[0]);
+            pres2.Save("input2.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
 
-        // SECTION 2: LOWCODE OPERATION
-        string outputPath = Path.Combine(Path.GetTempPath(), "output.pptx");
-        Merger.Process(new string[] { inputPath }, outputPath);
+            // Demonstrate Merger.Process
+            Merger.Process(new string[] { "input1.pptx", "input2.pptx" }, "output.pptx");
 
-        // SECTION 3: OUTPUT VALIDATION
-        if (File.Exists(outputPath))
-        {
-            long size = new FileInfo(outputPath).Length;
-            Console.WriteLine($"Success: output file size = {size} bytes");
-        }
-        else
-        {
-            Console.WriteLine("Merger failed to produce an output file.");
+            Console.WriteLine("Done.");
         }
     }
 }

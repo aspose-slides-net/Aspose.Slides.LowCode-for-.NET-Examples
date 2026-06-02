@@ -4,30 +4,32 @@ using Aspose.Slides;
 using Aspose.Slides.Export;
 using Aspose.Slides.LowCode;
 
-class Program
+namespace PluginExample
 {
-    static void Main()
+    class Program
     {
-        string inputPath = "input.pptx";
-        string outputPath = "output.pptx";
-
-        if (!File.Exists(inputPath))
+        static void Main(string[] args)
         {
-            Console.WriteLine($"Input file not found: {inputPath}");
-            return;
-        }
+            Console.WriteLine("Example: slides-compress");
 
-        using var pres = new Presentation(inputPath);
-        Compress.RemoveUnusedLayoutSlides(pres);
-        pres.Save(outputPath, SaveFormat.Pptx);
+            string inputPath = "input.pptx";
+            using (var pres = new Presentation())
+            {
+                pres.Slides[0].Shapes.AddAutoShape(
+                    Aspose.Slides.ShapeType.Rectangle, 100, 100, 200, 50);
+                pres.Save(inputPath, SaveFormat.Pptx);
+            }
 
-        if (File.Exists(outputPath))
-        {
-            Console.WriteLine("Compression completed successfully.");
-        }
-        else
-        {
-            Console.WriteLine("Failed to create output file.");
+            string outputPath = "output.pptx";
+            using (var pres = new Presentation(inputPath))
+            {
+                Compress.RemoveUnusedLayoutSlides(pres);
+                pres.Save(outputPath, SaveFormat.Pptx);
+            }
+
+            Console.WriteLine(File.Exists(outputPath)
+                ? $"Compression succeeded: {outputPath}"
+                : "Compression failed: output file not found.");
         }
     }
 }

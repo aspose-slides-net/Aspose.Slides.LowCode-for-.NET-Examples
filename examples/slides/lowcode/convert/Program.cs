@@ -1,42 +1,34 @@
 using System;
 using System.IO;
 using Aspose.Slides;
+using Aspose.Slides.Export;
 using Aspose.Slides.LowCode;
 
-class Program
+namespace PluginExample
 {
-    static void Main()
+    class Program
     {
-        // 1. Create input PPTX file
-        string inputPath = Path.Combine(Directory.GetCurrentDirectory(), "input.pptx");
-        using (Presentation pres = new Presentation())
+        static void Main(string[] args)
         {
-            ISlide slide = pres.Slides[0];
-            IAutoShape titleShape = slide.Shapes.AddAutoShape(ShapeType.Rectangle, 50, 50, 600, 100);
-            titleShape.AddTextFrame("LowCode Convert Demo");
-            pres.Save(inputPath, Aspose.Slides.Export.SaveFormat.Pptx);
-        }
+            Console.WriteLine("Example: slides-convert");
 
-        // Validate input file exists and is non‑empty
-        if (!File.Exists(inputPath) || new FileInfo(inputPath).Length == 0)
-        {
-            Console.WriteLine("Failed to create input presentation.");
-            return;
-        }
+            // Create input PPTX programmatically
+            string inputPath = "input.pptx";
+            using (var pres = new Presentation())
+            {
+                pres.Slides[0].Shapes.AddAutoShape(
+                    Aspose.Slides.ShapeType.Rectangle, 100, 100, 200, 50);
+                pres.Save(inputPath, SaveFormat.Pptx);
+            }
 
-        // 2. Perform LowCode conversion to PDF
-        string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output.pdf");
-        Aspose.Slides.LowCode.Convert.ToPdf(inputPath, outputPath);
+            // Convert PPTX to PDF using LowCode Convert
+            // Use fully-qualified name to avoid ambiguity with System.Convert
+            string outputPath = "output.pdf";
+            Aspose.Slides.LowCode.Convert.ToPdf(inputPath, outputPath);
 
-        // 3. Validate output file and report success
-        if (File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
-        {
-            long size = new FileInfo(outputPath).Length;
-            Console.WriteLine($"Conversion succeeded. Output file size: {size} bytes.");
-        }
-        else
-        {
-            Console.WriteLine("Conversion failed: output file not found or empty.");
+            Console.WriteLine(File.Exists(outputPath)
+                ? $"Conversion succeeded: {outputPath}"
+                : "Conversion failed: output file not found.");
         }
     }
 }
