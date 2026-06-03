@@ -21,7 +21,7 @@ dotnet build + runtime execution + output verification.
 
 Remove unused layout slides to reduce file size.
 
-**Location**: `examples/slides/lowcode/slides-compress/`
+**Location**: `examples/slides/lowcode/compress/`
 
 ```csharp
 using (var pres = new Presentation(inputPath))
@@ -35,7 +35,7 @@ using (var pres = new Presentation(inputPath))
 
 Convert presentations to PDF using the LowCode Convert API.
 
-**Location**: `examples/slides/lowcode/slides-convert/`
+**Location**: `examples/slides/lowcode/convert/`
 
 ```csharp
 Aspose.Slides.LowCode.Convert.ToPdf(inputPath, outputPath);
@@ -45,7 +45,7 @@ Aspose.Slides.LowCode.Convert.ToPdf(inputPath, outputPath);
 
 Merge multiple presentations into one.
 
-**Location**: `examples/slides/lowcode/slides-merger/`
+**Location**: `examples/slides/lowcode/merger/`
 
 ```csharp
 Merger.Process(new string[] { input1Path, input2Path }, outputPath);
@@ -62,7 +62,7 @@ Merger.Process(new string[] { input1Path, input2Path }, outputPath);
 ## How to Run
 
 ```bash
-cd examples/slides/lowcode/slides-compress
+cd examples/slides/lowcode/compress
 dotnet run
 ```
 
